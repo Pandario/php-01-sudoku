@@ -1,11 +1,15 @@
 <?php
 
 require 'generateSudoku.php';
+require 'validation.php';
 
 $sudokuGrid = [];
+$validationMessage = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sudokuGrid = generateSudoku();
+    $validationMessage = validation($sudokuGrid);
+    $isValid = $validationMessage === true;
 }
 ?>
 
@@ -24,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
     <h2>Sudoku</h2>
+    <?php if (isset($isValid) && !$isValid): ?>
+        <p>The generated Sudoku is not valid: <?php echo $validationMessage; ?></p>
+    <?php endif; ?>
     <table>
         <?php for ($row = 0; $row < 9; $row++): ?>
             <tr>
