@@ -1,3 +1,14 @@
+<?php
+
+require 'generateSudoku.php';
+
+$sudokuGrid = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $sudokuGrid = generateSudoku();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,21 +19,22 @@
 </head>
 <body>
 <div class="matrix">
+    <form method="POST">
+        <button class="btn" type="submit">Generate</button>
+    </form>
 
-        <form>
-            <button class="btn" type="submit">Generate</button>
-        </form>
-
-        <h2>Sudoku</h2>
-        <table>
-            <?php for ($row = 0; $row < 9; $row++): ?>
-                <tr>
-                    <?php for ($col = 0; $col < 9; $col++): ?>
-                        <td class="block-<?php echo intdiv($row, 3) * 3 + intdiv($col, 3) + 1; ?>"></td>
-                    <?php endfor; ?>
-                </tr>
-            <?php endfor; ?>
-        </table>
-    </div>
+    <h2>Sudoku</h2>
+    <table>
+        <?php for ($row = 0; $row < 9; $row++): ?>
+            <tr>
+                <?php for ($col = 0; $col < 9; $col++): ?>
+                    <td class="block-<?php echo intdiv($row, 3) * 3 + intdiv($col, 3) + 1; ?>">
+                        <?php echo isset($sudokuGrid[$row][$col]) ? $sudokuGrid[$row][$col] : ''; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        <?php endfor; ?>
+    </table>
+</div>
 </body>
 </html>
