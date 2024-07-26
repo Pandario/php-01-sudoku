@@ -3,7 +3,6 @@
 function validation($grid) {
     $letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
 
-
     for ($i = 0; $i < 9; $i++) {
         $rowCheck = $letters;
         $colCheck = $letters;

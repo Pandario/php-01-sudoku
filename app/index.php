@@ -3,14 +3,42 @@
 require 'generateSudoku.php';
 require 'validation.php';
 
+
+$servername = "localhost";
+$username = "root";
+$password = ""; 
+$dbname = "mysql"; 
+
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 $sudokuGrid = [];
 $validationMessage = '';
+$isValid = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sudokuGrid = generateSudoku();
     $validationMessage = validation($sudokuGrid);
     $isValid = $validationMessage === true;
+
+    if ($isValid) {
+        $result = $conn->query("SELECT MAX(id) as max_id FROM sudoku");
+        $row = $result->fetch_assoc();
+        $nextId = $row['max_id'] + 1;
+
+        $sudokuJson = json_encode($sudokuGrid);
+        $stmt = $conn->prepare("INSERT INTO sudoku (id, data) VALUES (?, ?)");
+        $stmt->bind_param("is", $nextId, $sudokuJson);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
