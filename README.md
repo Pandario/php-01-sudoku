@@ -1,6 +1,21 @@
 Put folder in xampp/htdocs. 
 In phpadmin make new table sudoku.
 
+***
+-- Create the database
+CREATE DATABASE IF NOT EXISTS mysql;
+
+-- Use the created database
+USE mysql;
+
+-- Create the sudoku table
+CREATE TABLE IF NOT EXISTS sudoku (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    data LONGTEXT NOT NULL
+);
+
+***
+
 App will generate 9x9 sudoku with letters. With unique letters for each row/col/3x3.
 If unique - will be written in table. Id + array. 
 Wanted first to use datenow for id, then decided to use just 1-...
